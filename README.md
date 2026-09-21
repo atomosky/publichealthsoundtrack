@@ -1,22 +1,22 @@
 The Public Health Soundtrack
 
-An interactive, browser-based game where familiar songs double as doorways into real public health concepts. Pick a topic, press play on a track, read the two-paragraph case study behind it, then answer a question to check what stuck. Finish every section and earn a DJ title for each one — plus a burst of confetti and a shot at the leaderboard.
+An interactive, browser-based game where familiar songs double as doorways into real public health concepts. Pick a topic, press play on a track, read the two-paragraph case study behind it, then answer a question to check what stuck. Finish every section and earn a DJ title and a shot at the leaderboard.
 
 Built as a single self-contained HTML file, so it runs anywhere with no build step, no server, and no dependencies beyond a browser.
 
 Live demo: open public-health-playlist.html directly in any browser, or host it on GitHub Pages (see below).
 
 What's inside
-8 sections, 21 tracks — Epidemiology, Health Informatics, Social Determinants, Health Behavior, Occupational Health, Health Policy, Environmental Health, and Cybersecurity
+8 sections, 21 tracks: Epidemiology, Health Informatics, Social Determinants, Health Behavior, Occupational Health, Health Policy, Environmental Health, and Cybersecurity
 Every case study cites a real, verifiable source (CDC, EPA, USDA, peer-reviewed journals, Supreme Court rulings, etc.) — linked at the bottom of each track's panel
 Optional real audio: any track can be wired to an actual Spotify embed
 A shared leaderboard (via Firebase) so a group can compare scores
-DJ nicknames — finishing a section unlocks a title like "DJ Outbreak" or "DJ Zip Code"
-A "Got thoughts?" feedback box that appears once someone finishes, so players can send suggestions or bug reports
+DJ nicknames: finishing a section unlocks a title like "DJ Outbreak" or "DJ Zip Code"
+A "Thoughts?" feedback box that appears once someone finishes, so players can send suggestions or bug reports
 A live invite to The Public Health Soundtrack, a real collaborative Spotify playlist, right on the landing page
 Quick start
 Download public-health-playlist.html
-Open it in any browser — that's it, the game works immediately with plain title cards for every track (no audio yet)
+Open it in any browser — that's it, the game works immediately with plain title cards for every track
 
 No installation, no npm, no build tools. It's one file.
 
@@ -80,10 +80,10 @@ To add a new track, copy an existing track object and edit the fields. To add a 
 
 The real Spotify playlist
 
-Separately from the game, there's an actual collaborative Spotify playlist called The Public Health Soundtrack, linked on the landing page. Anyone with the link can add a song that carries a public health message. The game and the playlist are related but independent — songs in the game don't have to come from the playlist, and vice versa.
+Separately from the game, there's an actual collaborative Spotify playlist called The Public Health Soundtrack, linked on the landing page. Anyone with the link can add a song that carries a public health message. The game and the playlist are related but independent - songs in the game don't have to come from the playlist, and vice versa.
 
 Tech notes
-Single HTML file — all CSS and JavaScript are inline, no build step
+Single HTML file - all CSS and JavaScript are inline, no build step
 Uses localStorage to remember a player's name between visits (falls back gracefully if unavailable)
 Firebase is loaded dynamically only if a config is provided, so the file works standalone without it
 No frameworks, no dependencies beyond the optional Firebase SDK (loaded from Google's CDN)
