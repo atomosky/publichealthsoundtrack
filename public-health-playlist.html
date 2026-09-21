@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Public Health Soundtrack</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+  :root{
+    --bg:#F4F0FF;
+    --card:#FFFFFF;
+    --card-2:#F4F0FF;
+    --ink:#22213B;
+    --ink-dim:#6E6B8C;
+    --violet:#7C5CFC;
+    --violet-dim:#5F3FE0;
+    --coral:#FF7A5C;
+    --mint:#2FBF9F;
+    --mint-dim:#1F9880;
+    --red:#E24C4C;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0; padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Space Grotesk', sans-serif;
+    min-height:100vh;
+    padding:32px 18px 64px;
+  }
+  .wrap{max-width:640px; margin:0 auto;}
+
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:clamp(32px, 8vw, 44px);
+    line-height:1.05;
+    margin:0 0 10px;
+  }
+  h1 em{font-style:italic; color:var(--violet);}
+  p.sub{
+    font-size:15.5px;
+    line-height:1.55;
+    color:var(--ink-dim);
+    max-width:46ch;
+    margin:0;
+  }
+
+  /* ---------- Intro screen ---------- */
+  .intro{
+    background:var(--card);
+    border-radius:20px;
+    padding:26px 24px 24px;
+    margin-top:24px;
+    box-shadow:0 4px 24px rgba(34,33,59,0.08);
+  }
+  .intro h2{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:20px;
+    margin:0 0 12px;
+  }
+  .intro p{
+    font-size:14.5px;
+    line-height:1.6;
+    color:#3A3856;
+    margin:0 0 14px;
+  }
+  .intro p:last-of-type{margin-bottom:0;}
+  .intro-steps{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin:16px 0;
+  }
+  .intro-step{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  .intro-step-num{
+    width:24px; height:24px; border-radius:50%; flex-shrink:0;
+    background:var(--card-2);
+    color:var(--violet);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:600; font-size:12px;
+    margin-top:1px;
+  }
+  .intro-step p{margin:0; font-size:14px; line-height:1.5; color:#3A3856;}
+  .intro-start-btn{
+    background:var(--ink);
+    color:white;
+    border:none;
+    border-radius:100px;
+    padding:13px 26px;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:15px;
+    cursor:pointer;
+    margin-top:6px;
+  }
+  .intro-start-btn:hover{background:#332f57;}
+
+  /* ---------- Score row ---------- */
+  .score-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-top:22px;
+    padding-top:18px;
+    border-top:1px solid rgba(34,33,59,0.12);
+  }
+  .score-disc{
+    width:32px;height:32px;border-radius:10px;
+    background:var(--violet);
+    color:white;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces',serif; font-weight:600; font-size:13px;
+    flex-shrink:0;
+  }
+  .score-text{font-size:13.5px; color:var(--ink-dim);}
+  .score-text b{color:var(--ink); font-weight:600;}
+
+  /* ---------- Intro name field ---------- */
+  .intro-name-row{
+    margin-top:18px;
+  }
+  #nameInput{
+    width:100%;
+    background:var(--card-2);
+    border:1.5px solid rgba(34,33,59,0.12);
+    border-radius:10px;
+    padding:11px 13px;
+    color:var(--ink);
+    font-family:'Space Grotesk', sans-serif;
+    font-size:14.5px;
+  }
+  #nameInput:focus{outline:none; border-color:var(--violet);}
+  #nameInput::placeholder{color:rgba(34,33,59,0.35);}
+
+  .playing-as{
+    font-size:12.5px;
+    color:var(--ink-dim);
+    margin:16px 0 0;
+  }
+  .playing-as button{
+    background:none; border:none; color:var(--violet);
+    font-family:inherit; font-size:12.5px; cursor:pointer;
+    padding:0; text-decoration:underline;
+  }
+
+  /* ---------- Sections (accordion "dials") ---------- */
+  .sections{
+    margin-top:24px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .section{
+    background:var(--card);
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 2px 14px rgba(34,33,59,0.06);
+  }
+
+  .section-header{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:16px 18px;
+    cursor:pointer;
+    width:100%;
+    background:none;
+    border:none;
+    color:inherit;
+    font-family:inherit;
+    text-align:left;
+  }
+  .section-header:focus-visible{outline:2px solid var(--violet); outline-offset:-2px;}
+
+  .section-icon{
+    width:36px; height:36px; border-radius:10px; flex-shrink:0;
+    background:var(--card-2);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:600; font-size:13px;
+    color:var(--violet);
+  }
+  .section.complete .section-icon{
+    background:var(--mint);
+    color:white;
+  }
+
+  .section-titles{flex:1; min-width:0;}
+  .section-name{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:17px;
+    margin:0 0 2px;
+  }
+  .section-meta{
+    font-size:12.5px;
+    color:var(--ink-dim);
+  }
+  .dj-badge{
+    display:inline-block;
+    font-weight:600;
+    color:var(--mint-dim);
+    background:rgba(47,191,159,0.14);
+    border-radius:100px;
+    padding:2px 10px 3px;
+    font-size:12px;
+  }
+
+  .section-chevron{
+    width:20px; height:20px; flex-shrink:0;
+    color:var(--ink-dim);
+    transition:transform 0.2s ease;
+  }
+  .section.open .section-chevron{transform:rotate(180deg);}
+
+  .section-body{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height 0.3s ease;
+  }
+  .section.open .section-body{max-height:4000px;}
+
+  .section-tracks{
+    padding:0 12px 14px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+
+  .track{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:var(--card-2);
+    border:none;
+    border-radius:12px;
+    padding:11px 14px;
+    cursor:pointer;
+    text-align:left;
+    transition:background 0.15s ease;
+    width:100%;
+    color:inherit;
+    font-family:inherit;
+  }
+  .track:hover:not(:disabled){background:#ECE6FF;}
+  .track:focus-visible{outline:2px solid var(--violet); outline-offset:2px;}
+
+  .track-play{
+    width:30px; height:30px; border-radius:50%; flex-shrink:0;
+    background:var(--coral);
+  }
+  .track.played .track-play{background:var(--mint);}
+
+  .track-info{flex:1; min-width:0;}
+  .track-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:15px;
+    margin:0 0 2px;
+  }
+  .track-artist{
+    font-size:12px;
+    color:var(--ink-dim);
+  }
+  .track-status{
+    font-size:11.5px;
+    color:var(--coral);
+    flex-shrink:0;
+    font-weight:600;
+  }
+  .track.played .track-status{color:var(--mint-dim);}
+
+  /* ---------- Now playing / case study panel ---------- */
+  .panel{
+    display:none;
+    margin-top:24px;
+    background:var(--card);
+    color:var(--ink);
+    border-radius:18px;
+    padding:26px 24px 24px;
+    animation:rise 0.35s cubic-bezier(.2,.8,.2,1);
+    box-shadow:0 4px 24px rgba(34,33,59,0.08);
+  }
+  .panel.active{display:block;}
+  @keyframes rise{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+
+  .panel-track{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:4px;
+  }
+  .panel-track-title{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:22px;
+  }
+  .panel-track-artist{
+    font-size:13px;
+    color:var(--ink-dim);
+  }
+  .panel-tag{
+    font-size:12px;
+    font-weight:600;
+    color:var(--mint-dim);
+    background:rgba(47,191,159,0.12);
+    border-radius:100px;
+    padding:4px 10px;
+    white-space:nowrap;
+  }
+
+  .spotify-embed{
+    margin:16px 0 0;
+    border-radius:12px;
+    overflow:hidden;
+  }
+  .spotify-embed iframe{display:block;}
+
+  .play-cue{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:16px 0 8px;
+    font-size:13px;
+    font-weight:600;
+    color:var(--coral);
+  }
+  .play-cue-dot{
+    width:9px; height:9px; border-radius:50%;
+    background:var(--coral);
+    flex-shrink:0;
+    animation:pulse-dot 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse-dot{
+    0%, 100%{ transform:scale(1); opacity:1; }
+    50%{ transform:scale(1.5); opacity:0.5; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .play-cue-dot{animation:none;}
+  }
+
+  .case-study{
+    font-size:15px;
+    line-height:1.6;
+    margin:16px 0 0;
+    color:#2E2C4C;
+  }
+  .case-study p{margin:0 0 12px;}
+  .case-study p:last-child{margin-bottom:0;}
+
+  .source-line{
+    margin:14px 0 0;
+    padding-top:14px;
+    border-top:1px solid rgba(34,33,59,0.10);
+    font-size:12.5px;
+    line-height:1.5;
+    color:var(--ink-dim);
+  }
+  .source-line a{
+    color:var(--mint-dim);
+    text-decoration:none;
+    border-bottom:1px solid rgba(31,152,128,0.35);
+  }
+  .source-line a:hover{border-bottom-color:var(--mint-dim);}
+
+  .divider{
+    height:1px;
+    background:rgba(34,33,59,0.10);
+    margin:20px 0;
+  }
+
+  .question{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:17px;
+    margin:0 0 14px;
+    line-height:1.35;
+  }
+
+  .choices{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .choice{
+    text-align:left;
+    background:var(--card-2);
+    border:1.5px solid transparent;
+    border-radius:12px;
+    padding:12px 14px;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:14.5px;
+    color:var(--ink);
+    cursor:pointer;
+    transition:border-color 0.12s ease, background 0.12s ease;
+  }
+  .choice:hover:not(:disabled){border-color:rgba(124,92,252,0.4);}
+  .choice:disabled{cursor:default;}
+  .choice.correct{
+    background:rgba(47,191,159,0.14);
+    border-color:var(--mint);
+  }
+  .choice.incorrect{
+    background:rgba(226,76,76,0.10);
+    border-color:var(--red);
+  }
+  .choice:focus-visible{outline:2px solid var(--violet); outline-offset:2px;}
+
+  .feedback{
+    margin-top:14px;
+    font-size:14px;
+    line-height:1.55;
+    padding:13px 15px;
+    border-radius:12px;
+    display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback.correct{background:rgba(47,191,159,0.12); color:#164F42;}
+  .feedback.incorrect{background:rgba(226,76,76,0.08); color:#7A2A2A;}
+  .feedback b{display:block; margin-bottom:3px; font-size:13px;}
+
+  .next-btn{
+    margin-top:18px;
+    display:none;
+    background:var(--ink);
+    color:white;
+    border:none;
+    border-radius:100px;
+    padding:12px 22px;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+  }
+  .next-btn.show{display:inline-block;}
+  .next-btn:hover{background:#332f57;}
+
+  /* ---------- Contribute (Spotify playlist invite) ---------- */
+  .contribute{
+    margin-top:24px;
+    background:var(--card);
+    border-radius:18px;
+    padding:20px 20px;
+    box-shadow:0 2px 14px rgba(34,33,59,0.06);
+  }
+  .contribute-head{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:10px;
+  }
+  .contribute-icon{
+    width:36px; height:36px; border-radius:50%; flex-shrink:0;
+    background:var(--mint);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .contribute h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:17px;
+    margin:0;
+  }
+  .contribute p{
+    font-size:13.5px;
+    line-height:1.6;
+    color:var(--ink-dim);
+    margin:0 0 12px;
+  }
+  .contribute p:last-of-type{margin-bottom:0;}
+  .contribute-steps{
+    font-size:13px;
+    line-height:1.7;
+    color:#3A3856;
+    margin:0 0 14px;
+    padding-left:18px;
+  }
+  .contribute-btn{
+    display:inline-block;
+    background:var(--mint);
+    color:white;
+    text-decoration:none;
+    border-radius:100px;
+    padding:11px 22px;
+    font-weight:600;
+    font-size:14px;
+  }
+  .contribute-btn:hover{background:var(--mint-dim);}
+
+  /* ---------- Leaderboard ---------- */
+  .leaderboard{
+    margin-top:16px;
+    background:var(--card);
+    border-radius:18px;
+    padding:18px 18px 8px;
+    box-shadow:0 2px 14px rgba(34,33,59,0.06);
+  }
+  .leaderboard-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:16px;
+    margin:0 0 12px;
+  }
+  .leaderboard-empty{
+    font-size:13.5px;
+    color:var(--ink-dim);
+    margin:0 0 12px;
+  }
+  .lb-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 0;
+    border-top:1px solid rgba(34,33,59,0.08);
+    font-size:14px;
+  }
+  .lb-row:first-child{border-top:none;}
+  .lb-rank{
+    width:20px;
+    color:var(--violet);
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    flex-shrink:0;
+  }
+  .lb-name{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .lb-name.me{color:var(--violet); font-weight:600;}
+  .lb-pts{color:var(--ink-dim); font-size:13px; flex-shrink:0;}
+
+  /* ---------- Feedback box ---------- */
+  .feedback-box{
+    margin-top:16px;
+    background:var(--card);
+    border-radius:18px;
+    padding:20px 18px;
+    box-shadow:0 2px 14px rgba(34,33,59,0.06);
+  }
+  .feedback-box h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:16px;
+    margin:0 0 8px;
+  }
+  .feedback-box p{
+    font-size:13.5px;
+    line-height:1.55;
+    color:var(--ink-dim);
+    margin:0 0 14px;
+  }
+  #feedbackName, #feedbackMessage{
+    width:100%;
+    background:var(--card-2);
+    border:1.5px solid rgba(34,33,59,0.12);
+    border-radius:10px;
+    padding:11px 13px;
+    color:var(--ink);
+    font-family:'Space Grotesk', sans-serif;
+    font-size:14px;
+    margin-bottom:10px;
+    resize:vertical;
+  }
+  #feedbackName:focus, #feedbackMessage:focus{outline:none; border-color:var(--violet);}
+  #feedbackName::placeholder, #feedbackMessage::placeholder{color:rgba(34,33,59,0.35);}
+  .feedback-submit-btn{
+    background:var(--violet);
+    color:white;
+    border:none;
+    border-radius:100px;
+    padding:11px 22px;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:14px;
+    cursor:pointer;
+  }
+  .feedback-submit-btn:hover{background:var(--violet-dim);}
+  .feedback-confirm{
+    margin:12px 0 0 !important;
+    font-size:13.5px;
+    color:var(--mint-dim) !important;
+    font-weight:600;
+  }
+
+  /* ---------- Finale ---------- */
+  .finale{
+    display:none;
+    position:relative;
+    margin-top:24px;
+    text-align:center;
+    padding:34px 20px;
+    background:var(--card);
+    border-radius:18px;
+    box-shadow:0 4px 24px rgba(34,33,59,0.08);
+    overflow:hidden;
+  }
+  .finale.active{display:block;}
+  #confettiCanvas{
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    pointer-events:none;
+  }
+  .finale-badge{
+    width:64px; height:64px; border-radius:50%;
+    margin:0 auto 18px;
+    background:var(--violet);
+    position:relative;
+  }
+  .finale h2{
+    font-family:'Fraunces', serif;
+    font-size:24px;
+    margin:0 0 8px;
+    position:relative;
+  }
+  .finale p{
+    color:var(--ink-dim);
+    font-size:14.5px;
+    margin:0 0 20px;
+    position:relative;
+  }
+  .finale-djs{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:6px;
+    margin:0 0 22px;
+    position:relative;
+  }
+  .finale-dj-chip{
+    font-size:12px;
+    font-weight:600;
+    color:var(--mint-dim);
+    background:rgba(47,191,159,0.14);
+    border-radius:100px;
+    padding:5px 12px;
+  }
+  .replay-btn{
+    background:transparent;
+    border:1.5px solid var(--violet);
+    color:var(--violet);
+    border-radius:100px;
+    padding:10px 22px;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+    position:relative;
+  }
+  .replay-btn:hover{background:rgba(124,92,252,0.08);}
+
+  @media (prefers-reduced-motion: reduce){
+    .panel{animation:none;}
+    .section-body{transition:none;}
+    .section-chevron{transition:none;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>The Public Health <em>Soundtrack</em></h1>
+    <p class="sub">A song is playing. Somewhere inside it is a real public health idea. Can you find it?</p>
+  </header>
+
+  <div class="intro" id="intro">
+    <h2>What is this?</h2>
+    <p>Public health is the work of keeping whole communities healthy — not just treating people one at a time, but understanding why some neighborhoods, jobs, or groups face more risk than others, and what actually helps.</p>
+    <p>This is a playful way into some of the ideas behind that work. Each track connects to a real concept — how diseases spread, why where you live affects your health, how technology helps or hurts. No background needed.</p>
+    <div class="intro-steps">
+      <div class="intro-step">
+        <div class="intro-step-num">1</div>
+        <p>Enter a name or nickname — this is what shows up on the leaderboard.</p>
+      </div>
+      <div class="intro-step">
+        <div class="intro-step-num">2</div>
+        <p>Pick a topic and press play on a track.</p>
+      </div>
+      <div class="intro-step">
+        <div class="intro-step-num">3</div>
+        <p>Read the short case study behind the song.</p>
+      </div>
+      <div class="intro-step">
+        <div class="intro-step-num">4</div>
+        <p>Answer one question to check what stuck.</p>
+      </div>
+    </div>
+    <div class="intro-name-row">
+      <input type="text" id="nameInput" maxlength="24" placeholder="Your name or nickname" onkeydown="if(event.key==='Enter') startGame()" />
+    </div>
+    <button class="intro-start-btn" onclick="startGame()">Let's go</button>
+  </div>
+
+  <div class="contribute" id="contribute">
+    <div class="contribute-head">
+      <div class="contribute-icon"></div>
+      <h3>Add a song to the Spotify soundtrack</h3>
+    </div>
+    <p>There's an actual Spotify playlist called <strong>The Public Health Soundtrack</strong> — a running collection of songs that carry a public health message, whether that's about health equity, mental health, community, or care.</p>
+    <p>It's collaborative, so anyone with the link can add a track.</p>
+    <ol class="contribute-steps">
+      <li>Open the soundtrack on Spotify using the button below</li>
+      <li>Tap the <strong>⋯</strong> menu, or just search and hit <strong>Add to playlist</strong></li>
+      <li>Pick a song you think belongs — and if you'd like, share why in the soundtrack's activity feed</li>
+    </ol>
+    <a class="contribute-btn" href="https://open.spotify.com/playlist/1QNrRHrOP3JGnEngENJNpM" target="_blank" rel="noopener noreferrer">Open the soundtrack on Spotify</a>
+  </div>
+
+  <div id="gameArea" style="display:none;">
+    <div class="score-row">
+      <div class="score-disc" id="scoreDisc">0</div>
+      <div class="score-text"><b id="scoreCount">0</b> of <span id="totalCount">0</span> tracks played &middot; <span id="scorePoints">0</span> pts</div>
+    </div>
+
+    <p class="playing-as" id="playingAs" style="display:none;"></p>
+
+    <div class="sections" id="sectionsList" style="display:none;"></div>
+
+    <div class="panel" id="panel"></div>
+
+    <div class="finale" id="finale">
+      <canvas id="confettiCanvas"></canvas>
+      <div class="finale-badge"></div>
+      <h2 id="finaleTitle">You made it through the soundtrack.</h2>
+      <p id="finaleText"></p>
+      <div class="finale-djs" id="finaleDjs"></div>
+      <button class="replay-btn" onclick="resetGame()">Play again</button>
+
+      <div class="feedback-box">
+        <h3>Got thoughts?</h3>
+        <p>Tell me what worked, what didn't, or pitch a song and the concept it should teach. This goes straight to me — it isn't shown to other players.</p>
+        <input type="text" id="feedbackName" maxlength="30" placeholder="Your name (optional)" />
+        <textarea id="feedbackMessage" maxlength="1000" rows="4" placeholder="Feedback, bug reports, or a song + concept idea..."></textarea>
+        <button class="feedback-submit-btn" onclick="submitFeedback()">Send feedback</button>
+        <p class="feedback-confirm" id="feedbackConfirm" style="display:none;">Thanks — that's been sent along.</p>
+      </div>
+    </div>
+
+    <div class="leaderboard" id="leaderboard" style="display:none;">
+      <p class="leaderboard-title">Leaderboard</p>
+      <div class="leaderboard-rows" id="leaderboardRows">
+        <p class="leaderboard-empty">No scores yet — be the first to finish.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ---- Playlist data, organized into sections ----
+// Paste a real Spotify share link for each track (right-click a song in Spotify →
+// Share → Copy Song Link) into spotifyLink. Leave blank ("") to show a plain title card.
+const SECTIONS = [
+  {
+    id: "epi",
+    name: "Epidemiology",
+    nickname: "DJ Outbreak",
+    tracks: [
+      {
+        title: "Bad Blood",
+        artist: "concept: viral spread",
+        spotifyLink: "https://open.spotify.com/track/273dCMFseLcVsoSWx59IoE",
+        caseStudy: [
+          "A song about a friendship falling apart, gone viral, spreading fast through every group chat and radio station in a matter of days — is basically a transmission model in disguise.",
+          "In epidemiology, we describe how something spreads through a population using R0 (\"R-naught\") — the average number of new cases one case generates. A song going viral, a rumor moving through a friend group, or a virus moving through a dorm all follow the same basic math: more contacts and easier transmission push R0 up; behavior change and \"immunity\" (already having heard it, or in disease terms, already being immune) push it down."
+        ],
+        question: "If a disease has an R0 of 3, and nothing changes about behavior or immunity, what happens to the outbreak?",
+        choices: [
+          { text: "It stays exactly the same size over time", correct: false },
+          { text: "It grows, since each case produces more than one new case", correct: true },
+          { text: "It dies out on its own", correct: false },
+          { text: "R0 only matters for airborne diseases", correct: false }
+        ],
+        feedbackCorrect: "Exactly. R0 > 1 means each infected person is, on average, infecting more than one other person, so case counts climb — that's the exponential curve you've seen on every pandemic dashboard.",
+        feedbackIncorrect: "Not quite — R0 of 3 means each case creates 3 new ones on average. Any R0 above 1 means the outbreak grows, not stalls.",
+        source: { label: "CDC, Emerging Infectious Diseases: \"Complexity of the Basic Reproduction Number (R0)\"", url: "https://wwwnc.cdc.gov/eid/article/25/1/17-1901_article" }
+      },
+      {
+        title: "Toxic",
+        artist: "concept: exposure & dose-response",
+        spotifyLink: "",
+        caseStudy: [
+          "A song about something poisonous, a little at a time, points at one of epidemiology's foundational ideas: the dose-response relationship — the principle that the health effect of an exposure usually depends on how much of it you get, and for how long.",
+          "This is why public health guidance rarely says a substance is simply \"safe\" or \"unsafe\" — it asks at what dose, over what duration, for whom. It's the same logic behind occupational exposure limits, air quality indexes, and medication dosing."
+        ],
+        question: "What does the dose-response relationship in epidemiology primarily describe?",
+        choices: [
+          { text: "Whether a disease is contagious", correct: false },
+          { text: "How the size and duration of an exposure relates to the size of its health effect", correct: true },
+          { text: "How quickly a vaccine works", correct: false },
+          { text: "The cost of a medical treatment", correct: false }
+        ],
+        feedbackCorrect: "Right — dose-response is about the relationship between how much exposure someone gets and how strong the resulting health effect is, which is why exposure limits exist instead of blanket bans.",
+        feedbackIncorrect: "Dose-response is specifically about exposure amount and duration versus effect size — not contagiousness or cost, but how much of something it takes to cause harm.",
+        source: { label: "Biology LibreTexts: \"The Dose-Response Relationship\" (Principles of Toxicology)", url: "https://bio.libretexts.org/Courses/Coastline_College/ENVS_C100:_Environmental_Science_(Hoerer)/02:_Environmental_Chemistry/2.06:_Toxicology_MSDT/2.6.06:_Principles_of_Toxicology/2.6.6.02:_Dose_and_Dose_Response/2.6.6.2.02:_The_Dose_Response_Relationship" }
+      },
+      {
+        title: "Waterfalls",
+        artist: "concept: entertainment-education & HIV messaging",
+        spotifyLink: "",
+        caseStudy: [
+          "Released in 1995, this song made chart history as the first number-one hit to reference AIDS directly in its lyrics — one verse follows a man who contracts HIV through unprotected sex, at a time when the disease was still heavily stigmatized and few mainstream artists addressed it head-on.",
+          "Public health researchers have a name for exactly this kind of strategy: entertainment-education, the practice of embedding accurate health information inside a story or song people already want to engage with. It works partly because it reaches people who would never seek out a formal health campaign — meeting them in a space they've already chosen to be in."
+        ],
+        question: "What is the public health term for using popular media, like a hit song, to spread health information within a story audiences already want to engage with?",
+        choices: [
+          { text: "Herd immunity", correct: false },
+          { text: "Entertainment-education", correct: true },
+          { text: "Contact tracing", correct: false },
+          { text: "Randomized controlled trial", correct: false }
+        ],
+        feedbackCorrect: "Right — entertainment-education embeds accurate health information inside media people are already choosing to engage with, which is part of why it can reach audiences a formal campaign might miss.",
+        feedbackIncorrect: "The term is entertainment-education — using a story or song people already want to engage with as the vehicle for accurate health information, reaching audiences a traditional campaign might not.",
+        source: { label: "PBS American Experience: \"Songs of the Summer 1995\"", url: "https://www.pbs.org/wgbh/americanexperience/features/songs-of-the-summer-1995" }
+      }
+    ]
+  },
+  {
+    id: "informatics",
+    name: "Health Informatics",
+    nickname: "DJ Data Byte",
+    tracks: [
+      {
+        title: "Human",
+        artist: "concept: human-in-the-loop AI",
+        spotifyLink: "",
+        caseStudy: [
+          "A song insisting \"I'm only human\" is a good frame for one of the most debated questions in clinical informatics: how much decision-making should a model make on its own, versus flagging things for a human clinician to review?",
+          "\"Human-in-the-loop\" design keeps a clinician as the final decision-maker, with AI serving as a second opinion or triage tool — this tends to build more trust and catch AI errors, but depends on the human actually scrutinizing the AI's suggestion rather than rubber-stamping it, a failure mode called automation bias."
+        ],
+        question: "What is \"automation bias\" a risk of, even in a human-in-the-loop clinical AI system?",
+        choices: [
+          { text: "The AI running too slowly to be useful", correct: false },
+          { text: "The human clinician over-trusting the AI's suggestion instead of independently evaluating it", correct: true },
+          { text: "The AI refusing to give any recommendation", correct: false },
+          { text: "Patients refusing to see a human doctor at all", correct: false }
+        ],
+        feedbackCorrect: "Exactly. Automation bias is when the human in the loop starts deferring to the machine by default, which quietly defeats the purpose of having a human check in the first place.",
+        feedbackIncorrect: "Automation bias specifically means the clinician starts trusting the AI's output without real scrutiny — the human is technically \"in the loop,\" but not meaningfully checking the system.",
+        source: { label: "Goddard, Roudsari & Wyatt, Journal of the American Medical Informatics Association: \"Automation bias: a systematic review\"", url: "https://academic.oup.com/jamia/article/19/1/121/727319" }
+      },
+      {
+        title: "Blank Space",
+        artist: "concept: data gaps & missingness",
+        spotifyLink: "",
+        caseStudy: [
+          "A song titled around empty space fits one of the quieter problems in health informatics: missing data. Electronic health records, wearables, and research datasets all have gaps — and those gaps are rarely random.",
+          "People who face barriers to care (due to insurance, transportation, distrust of the medical system, or language access) tend to have sparser records, which means systems trained on that data learn less about them, and may perform worse for exactly the populations who most need better care."
+        ],
+        question: "Why is missing data in health records described as an equity issue, not just a technical one?",
+        choices: [
+          { text: "Missing data affects everyone equally, so it's a pure engineering problem", correct: false },
+          { text: "Data gaps tend to cluster among people with less access to care, making systems trained on that data work worse for them", correct: true },
+          { text: "Missing data always means the patient is healthy", correct: false },
+          { text: "It only affects billing, not clinical outcomes", correct: false }
+        ],
+        feedbackCorrect: "Right — the pattern of who has thin records isn't random, so a system trained on that data can end up least reliable for the populations already facing the most barriers to care.",
+        feedbackIncorrect: "The equity angle is that missingness isn't evenly spread — it clusters with existing access barriers, so systems trained on incomplete data can end up performing worst for the people who need them most.",
+        source: { label: "Gianfrancesco et al., JAMA Internal Medicine: \"Potential Biases in Machine Learning Algorithms Using Electronic Health Record Data\"", url: "https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2697494" }
+      },
+      {
+        title: "Call Me Maybe",
+        artist: "concept: telehealth & the digital divide",
+        spotifyLink: "",
+        caseStudy: [
+          "A song built entirely around reaching someone at a distance maps onto telehealth — care delivered over video or phone instead of in person, which expanded rapidly starting in 2020.",
+          "Telehealth can dramatically improve access for people in rural areas or without transportation, but it also depends on things many people don't have: reliable broadband, a private space to talk, and comfort with the technology itself — the \"digital divide\" that can quietly exclude the patients who might benefit most."
+        ],
+        question: "Which factor is most likely to create unequal telehealth access, even when the service itself is free?",
+        choices: [
+          { text: "The color scheme of the video app", correct: false },
+          { text: "Reliable home broadband and a private space to take the call", correct: true },
+          { text: "The length of the appointment", correct: false },
+          { text: "Whether the visit is scheduled in the morning or afternoon", correct: false }
+        ],
+        feedbackCorrect: "Exactly — broadband access and having a private, quiet place to talk are unevenly distributed, so a \"free\" telehealth visit can still be effectively out of reach for some patients.",
+        feedbackIncorrect: "The bigger driver is infrastructure and privacy: without reliable broadband and a private space to talk, a telehealth visit isn't really accessible, no matter how good the app is.",
+        source: { label: "Health Affairs: \"Minding The Access Gap: Addressing Both The Digital And Transportation Divides\"", url: "https://www.healthaffairs.org/content/forefront/minding-access-gap-addressing-both-digital-and-transportation-divides-improve-outcomes" }
+      }
+    ]
+  },
+  {
+    id: "determinants",
+    name: "Social Determinants",
+    nickname: "DJ Zip Code",
+    tracks: [
+      {
+        title: "Where I'm From",
+        artist: "concept: place-based health",
+        spotifyLink: "",
+        caseStudy: [
+          "Any song that's really a love letter (or complicated letter) to a hometown is pointing at something public health cares about deeply: your zip code can predict your health outcomes better than your genetic code.",
+          "This is the core idea behind social determinants of health — the conditions where people are born, live, work, and age. Access to grocery stores, safe housing, green space, and quality schools all cluster geographically, which is why life expectancy can differ by a decade or more between neighborhoods just a few miles apart."
+        ],
+        question: "Which of these is a classic example of a social determinant of health?",
+        choices: [
+          { text: "A person's blood type", correct: false },
+          { text: "Distance to the nearest grocery store with fresh produce", correct: true },
+          { text: "Height", correct: false },
+          { text: "Eye color", correct: false }
+        ],
+        feedbackCorrect: "Right — this is the \"food desert\" concept. Physical access to affordable, healthy food shapes diet and downstream chronic disease risk, and it's determined by where you live, not just personal choice.",
+        feedbackIncorrect: "The one that fits is grocery access — it's a textbook social determinant, since it's shaped by neighborhood infrastructure, not biology.",
+        source: { label: "USDA Economic Research Service: \"Food Access Research Atlas\"", url: "https://www.ers.usda.gov/data-products/food-access-research-atlas" }
+      },
+      {
+        title: "Mirrors",
+        artist: "concept: algorithmic bias & equity",
+        spotifyLink: "",
+        caseStudy: [
+          "A song about seeing a reflection of yourself is a fitting way into algorithmic bias — the way risk-prediction tools can mirror back the inequities already baked into the data they were trained on.",
+          "A widely studied 2019 case found a hospital risk-prediction algorithm used healthcare spending as a stand-in for how sick a patient was — but because Black patients historically had less money spent on their care (due to unequal access, not lower need), the algorithm systematically underestimated how sick they actually were."
+        ],
+        question: "In the well-documented hospital algorithm case, why did the tool underestimate illness in Black patients?",
+        choices: [
+          { text: "It used healthcare spending as a proxy for health need, and spending itself reflected unequal access", correct: true },
+          { text: "It was trained only on data from one hospital", correct: false },
+          { text: "The algorithm had a coding bug unrelated to bias", correct: false },
+          { text: "It only worked for patients over 65", correct: false }
+        ],
+        feedbackCorrect: "Right — using spending as a proxy for need baked in a historical inequity, since less money had been spent on Black patients' care even when their actual health needs were equal or greater.",
+        feedbackIncorrect: "The core issue was the proxy variable: the model used past healthcare spending to estimate illness, and spending itself was already unequal, so the bias got inherited rather than corrected.",
+        source: { label: "Obermeyer et al., Science: \"Dissecting racial bias in an algorithm used to manage the health of populations\"", url: "https://www.science.org/doi/10.1126/science.aax2342" }
+      },
+      {
+        title: "Where Do the Children Play",
+        artist: "concept: the built environment & child health",
+        spotifyLink: "",
+        caseStudy: [
+          "Released in 1970, this song questions what gets lost — literally, green space for kids to play — as cities pave over land in the name of progress. It's a question public health researchers still ask under a more technical name: the built environment, meaning everything from sidewalks and traffic patterns to parks and housing density.",
+          "Research consistently finds that children with more access to green space and walkable neighborhoods get more physical activity, more sleep, and spend less time sedentary — while heavy traffic and little green space are linked to worse outcomes on those same measures. It's a reminder that urban planning decisions are, in a real sense, health decisions."
+        ],
+        question: "According to research on the \"built environment,\" what tends to happen to children's health behaviors in neighborhoods with more green space and fewer major roads?",
+        choices: [
+          { text: "No measurable difference from other neighborhoods", correct: false },
+          { text: "Children are more physically active, sleep more, and are less sedentary", correct: true },
+          { text: "Children become less physically active", correct: false },
+          { text: "Only adult health is affected, not children's", correct: false }
+        ],
+        feedbackCorrect: "Right — more green space and fewer major roads are linked to more physical activity, better sleep, and less sedentary time in kids, which is why researchers treat urban design itself as a public health lever.",
+        feedbackIncorrect: "The research actually found the opposite of no effect: kids in greener, less traffic-heavy neighborhoods were more active, slept more, and were less sedentary — supporting the idea that neighborhood design shapes children's health.",
+        source: { label: "\"Modifying urban planning to promote child health: A scoping review of reviews\"", url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11873772/" }
+      }
+    ]
+  },
+  {
+    id: "behavior",
+    name: "Health Behavior",
+    nickname: "DJ Habit Loop",
+    tracks: [
+      {
+        title: "Stronger",
+        artist: "concept: stages of change",
+        spotifyLink: "",
+        caseStudy: [
+          "A song built around pushing through a hard workout maps neatly onto one of public health's most-used frameworks: the Transtheoretical Model (Stages of Change) — the idea that people move through predictable stages (precontemplation, contemplation, preparation, action, maintenance) before a health behavior sticks.",
+          "It's why public health campaigns rarely try to jump straight to \"action\" messaging for everyone — someone who hasn't even considered quitting smoking yet needs a very different message than someone who quit three weeks ago and is trying not to relapse."
+        ],
+        question: "A person who says \"I've never really thought about exercising more\" is most likely in which stage of change?",
+        choices: [
+          { text: "Maintenance", correct: false },
+          { text: "Precontemplation", correct: true },
+          { text: "Action", correct: false },
+          { text: "Preparation", correct: false }
+        ],
+        feedbackCorrect: "Exactly — precontemplation means the behavior isn't even on their radar yet. Messaging here works best when it raises awareness, not when it pushes an action plan.",
+        feedbackIncorrect: "That's precontemplation — the behavior hasn't entered their thinking yet, so awareness-building messaging works better than an action-oriented push.",
+        source: { label: "Wikipedia, citing Prochaska & DiClemente: \"Transtheoretical Model\"", url: "https://en.wikipedia.org/wiki/Transtheoretical_model" }
+      },
+      {
+        title: "Every Breath You Take",
+        artist: "concept: self-monitoring & behavior tracking",
+        spotifyLink: "",
+        caseStudy: [
+          "A song about watching someone's every move is an uncomfortably good entry point into self-monitoring as a behavior-change tool — step counts, food logs, sleep trackers — all built on the idea that tracking a behavior makes people more likely to change it.",
+          "Self-monitoring genuinely works for many people, but it isn't neutral: for some, especially those with a history of disordered relationships to food or exercise, constant tracking can backfire into anxiety or obsession rather than healthy change. Public health practitioners weigh who a tool like this helps against who it might harm."
+        ],
+        question: "What's a key caution public health practitioners raise about self-monitoring tools (step counters, food logs, etc.)?",
+        choices: [
+          { text: "They're too expensive for most people to access", correct: false },
+          { text: "For some people, constant tracking can worsen anxiety or unhealthy fixation rather than support change", correct: true },
+          { text: "They only work for athletes", correct: false },
+          { text: "They have no evidence behind them at all", correct: false }
+        ],
+        feedbackCorrect: "Right — self-monitoring has real evidence behind it for many people, but it can also intensify anxious or obsessive patterns in others, so it isn't a one-size-fits-all recommendation.",
+        feedbackIncorrect: "The main caution isn't cost or lack of evidence — it's that tracking can help some people and worsen anxious or obsessive patterns in others, so it needs to be recommended thoughtfully.",
+        source: { label: "Journal of Eating Disorders: \"Weight-related self-monitoring and disordered eating among emerging adults\"", url: "https://jeatdisord.biomedcentral.com/articles/10.1186/s40337-024-01069-x" }
+      },
+      {
+        title: "The Needle and the Damage Done",
+        artist: "concept: harm reduction",
+        spotifyLink: "",
+        caseStudy: [
+          "Neil Young wrote this song in the early 1970s after watching heroin use devastate people close to him, including a bandmate. Decades later, its central image — a needle and the damage it does — still captures a real tension in how public health approaches addiction: is the goal to stop use entirely, or to reduce the harm it causes along the way?",
+          "Harm reduction is the answer many public health agencies now favor: meeting people where they are, without requiring abstinence as a condition of help. In practice that includes things like naloxone, an overdose-reversal medication, and sterile syringe programs — approaches shown to reduce overdose deaths and the spread of bloodborne infections, while also serving as a bridge into treatment for people who are ready for it."
+        ],
+        question: "What is the core idea behind the public health approach known as harm reduction?",
+        choices: [
+          { text: "Requiring complete abstinence before any help is offered", correct: false },
+          { text: "Reducing the negative consequences of drug use without requiring abstinence first", correct: true },
+          { text: "Focusing only on criminal penalties for drug use", correct: false },
+          { text: "Ignoring substance use entirely", correct: false }
+        ],
+        feedbackCorrect: "Right — harm reduction meets people where they are, aiming to reduce overdose deaths and disease transmission, rather than making abstinence a precondition for any support at all.",
+        feedbackIncorrect: "Harm reduction specifically does not require abstinence upfront — the goal is reducing the immediate risks of drug use, like overdose or infection, while keeping the door open to treatment.",
+        source: { label: "U.S. Department of Health and Human Services: \"Harm Reduction\"", url: "https://www.hhs.gov/overdose-prevention/harm-reduction" }
+      }
+    ]
+  },
+  {
+    id: "occupational",
+    name: "Occupational Health",
+    nickname: "DJ Night Shift",
+    tracks: [
+      {
+        title: "9 to 5",
+        artist: "concept: shift work & burnout",
+        spotifyLink: "",
+        caseStudy: [
+          "A song about the grind of a working day is really about occupational health — the working conditions, hours, and environments that shape people's physical and mental health.",
+          "Non-standard schedules (night shifts, rotating shifts, long hours) are linked to higher rates of cardiovascular disease, sleep disorders, and mental health strain, because they push the body's circadian rhythm out of sync. This is a core reason occupational health researchers study not just workplace injuries, but the structure of work itself."
+        ],
+        question: "Which occupational factor is most strongly linked to disrupted circadian rhythm and related health risks?",
+        choices: [
+          { text: "Open-plan office seating", correct: false },
+          { text: "Rotating or night-shift work schedules", correct: true },
+          { text: "Casual dress codes", correct: false },
+          { text: "Working in a unionized workplace", correct: false }
+        ],
+        feedbackCorrect: "Right. Shift work that rotates or runs overnight fights against the body's natural sleep-wake cycle, and sustained disruption is tied to elevated cardiometabolic and mental health risk.",
+        feedbackIncorrect: "The strongest link here is rotating or overnight shift work — it disrupts the circadian rhythm in a way that accumulates into real cardiometabolic and mental health risk over time.",
+        source: { label: "Wong et al., Cureus: \"Shift Work as a Cardiovascular Disease Risk Factor: A Narrative Review\"", url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10387224/" }
+      }
+    ]
+  },
+  {
+    id: "policy",
+    name: "Health Policy",
+    nickname: "DJ Upstream",
+    tracks: [
+      {
+        title: "Ohio",
+        artist: "concept: policy & advocacy",
+        spotifyLink: "",
+        caseStudy: [
+          "Protest songs tied to a specific place and moment are a reminder that public health outcomes are often decided in statehouses and city councils, not just clinics.",
+          "Policy-level interventions — things like clean water regulation, smoking bans, or Medicaid expansion — tend to have larger population-level health impact than individual-level interventions, because they change the default conditions for everyone at once rather than relying on each person to make a different choice."
+        ],
+        question: "Why do public health researchers often say policy change has more impact than individual education campaigns alone?",
+        choices: [
+          { text: "Policy changes are cheaper to design", correct: false },
+          { text: "Policy changes the default conditions for an entire population at once", correct: true },
+          { text: "Individual campaigns are illegal in most states", correct: false },
+          { text: "Policy change requires no funding", correct: false }
+        ],
+        feedbackCorrect: "That's the key idea — this is sometimes called moving 'upstream.' Changing the environment or the default (like adding fluoride to water) reaches everyone automatically, instead of depending on individual behavior change.",
+        feedbackIncorrect: "The real reason is scale: policy resets the default for a whole population at once, which is why it's often called an \"upstream\" intervention compared to individual-level education.",
+        source: { label: "Frieden TR, American Journal of Public Health: \"A Framework for Public Health Action: The Health Impact Pyramid\"", url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2836340/" }
+      },
+      {
+        title: "Streets of Philadelphia",
+        artist: "concept: HIV discrimination protections",
+        spotifyLink: "",
+        caseStudy: [
+          "Written for the 1993 film Philadelphia, this song scores the story of a lawyer fired after his employer discovers he has AIDS — a plot based on a real 1987 discrimination case. At the time, it was genuinely unclear whether the law protected people with HIV from this kind of treatment at all.",
+          "That uncertainty was resolved in 1998, when the U.S. Supreme Court ruled in Bragdon v. Abbott that HIV infection counts as a disability under the Americans with Disabilities Act, even when someone has no visible symptoms. The ruling made it clearly illegal under federal civil rights law to fire, refuse service to, or otherwise discriminate against someone because of their HIV status — a policy change that reshaped how people living with HIV could expect to be treated at work, in healthcare settings, and in public life."
+        ],
+        question: "What did the U.S. Supreme Court decide in Bragdon v. Abbott (1998) regarding HIV and the Americans with Disabilities Act?",
+        choices: [
+          { text: "HIV only counts as a disability once symptoms appear", correct: false },
+          { text: "HIV infection counts as a disability under the ADA, even without visible symptoms", correct: true },
+          { text: "The ADA does not apply to any communicable disease", correct: false },
+          { text: "Employers can require HIV testing before hiring", correct: false }
+        ],
+        feedbackCorrect: "Right — the Court ruled that even asymptomatic HIV counted as a disability under the ADA, extending federal civil rights protections regardless of whether someone had visible symptoms.",
+        feedbackIncorrect: "The ruling went further than symptom status: the Court found that HIV counts as a disability under the ADA even when someone is asymptomatic, extending anti-discrimination protections to anyone living with the virus.",
+        source: { label: "Bragdon v. Abbott, 524 U.S. 624 (1998), Cornell Law School Legal Information Institute", url: "https://www.law.cornell.edu/supct/html/97-156.ZO.html" }
+      }
+    ]
+  },
+  {
+    id: "environmental",
+    name: "Environmental Health",
+    nickname: "DJ Air Raid",
+    tracks: [
+      {
+        title: "Cruel Summer",
+        artist: "concept: heat vulnerability",
+        spotifyLink: "",
+        caseStudy: [
+          "A song about a summer that turns dangerous rather than fun is a fitting frame for heat vulnerability — the fact that extreme heat doesn't put everyone at equal risk. It concentrates its harm on specific, predictable groups.",
+          "Older adults, people with chronic heart or lung conditions, outdoor workers, pregnant people, and young children face the highest risk — and within cities, risk clusters further in neighborhoods with less tree cover, less air conditioning access, and more asphalt and concrete (\"heat islands\"). A heatwave isn't a single uniform threat; it's a stress test that finds every existing gap in a community's resources."
+        ],
+        question: "Why do public health officials say heat risk is unevenly distributed, not just a matter of raw temperature?",
+        choices: [
+          { text: "Because thermometers are inaccurate in cities", correct: false },
+          { text: "Because factors like age, chronic illness, housing, and neighborhood heat exposure concentrate the risk in specific groups", correct: true },
+          { text: "Because heat only affects people who exercise outdoors", correct: false },
+          { text: "Because heat-related illness is entirely random", correct: false }
+        ],
+        feedbackCorrect: "Right — heat vulnerability layers biological risk (age, chronic conditions) with social and environmental risk (housing quality, access to cooling, neighborhood heat islands), which is why heat plans target specific populations rather than issuing one generic warning.",
+        feedbackIncorrect: "The real answer is that vulnerability compounds: biological factors like age and chronic illness combine with social and environmental ones like housing and neighborhood heat exposure, concentrating risk in predictable groups rather than spreading it evenly.",
+        source: { label: "CDC: \"Heat & Health Tracker\" — vulnerable populations and heat risk", url: "https://ephtracking.cdc.gov/Applications/heatTracker/" }
+      },
+      {
+        title: "Smoke Gets in Your Eyes",
+        artist: "concept: wildfire smoke & air quality",
+        spotifyLink: "",
+        caseStudy: [
+          "A classic standard about smoke clouding your vision doubles, literally, as a way into one of the fastest-growing environmental health concerns: wildfire smoke and fine particulate matter, or PM2.5.",
+          "These particles are small enough — about 30 times thinner than a human hair — to travel deep into the lungs and even enter the bloodstream, which is why wildfire smoke is linked to increased emergency visits for asthma, heart problems, and other conditions, sometimes hundreds of miles from the actual fire. The Air Quality Index (AQI) translates that invisible risk into a number people can act on."
+        ],
+        question: "Why is PM2.5 from wildfire smoke considered especially concerning for health, compared to larger airborne particles?",
+        choices: [
+          { text: "It smells worse than other pollutants", correct: false },
+          { text: "It's small enough to penetrate deep into the lungs and potentially enter the bloodstream", correct: true },
+          { text: "It only affects people with allergies", correct: false },
+          { text: "It's not regulated by any health agency", correct: false }
+        ],
+        feedbackCorrect: "Exactly — it's the particle's size, not its smell or visibility, that makes PM2.5 dangerous: it's small enough to bypass the body's usual filtering and reach deep lung tissue and the bloodstream.",
+        feedbackIncorrect: "The concerning part is size, not odor: PM2.5 particles are small enough to travel deep into the lungs and even cross into the bloodstream, which is why they're linked to both respiratory and cardiovascular effects.",
+        source: { label: "U.S. EPA: \"Why Wildfire Smoke Is a Health Concern\"", url: "https://www.epa.gov/wildfire-smoke-course/why-wildfire-smoke-health-concern" }
+      },
+      {
+        title: "Cigarette Trees",
+        artist: "concept: mountaintop removal mining & community health",
+        spotifyLink: "",
+        caseStudy: [
+          "Despite a title that echoes the old folk fantasy of a hobo's paradise, this song is a protest against mountaintop removal mining — a practice that blasts off mountain peaks in Appalachia to reach the coal seams underneath.",
+          "Peer-reviewed research has repeatedly found that people living near mountaintop removal sites face significantly higher rates of cardiovascular, respiratory, and kidney disease than people in nearby non-mining communities — even after controlling for smoking, poverty, and other known risk factors, pointing toward the mining environment itself, likely through air and water pollution, as a contributing factor."
+        ],
+        question: "What did peer-reviewed research find when comparing coal-mining and non-mining communities in Appalachia, after controlling for smoking, poverty, and other known risk factors?",
+        choices: [
+          { text: "Health outcomes were identical between the two types of communities", correct: false },
+          { text: "Mining communities still showed significantly higher rates of chronic disease", correct: true },
+          { text: "Non-mining communities had worse health outcomes", correct: false },
+          { text: "The study found no way to compare the two populations", correct: false }
+        ],
+        feedbackCorrect: "Right — even after adjusting for known risk factors like smoking and poverty, the elevated disease rates in mining communities persisted, pointing to something specific to the mining environment itself.",
+        feedbackIncorrect: "The key finding is that the gap didn't disappear after adjusting for other risk factors — mining communities still showed meaningfully higher rates of chronic disease, which pointed researchers toward the mining environment itself.",
+        source: { label: "Hendryx & Ahern, American Journal of Public Health: \"Relations Between Health Indicators and Residential Proximity to Coal Mining in West Virginia\"", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC2376994/" }
+      },
+      {
+        title: "Flint River Blues",
+        artist: "concept: lead-contaminated water & child health",
+        spotifyLink: "",
+        caseStudy: [
+          "The title points directly at one of the most consequential public health failures in recent U.S. history: in 2014, the city of Flint, Michigan switched its water source to the Flint River without adding the corrosion-control treatment needed to keep lead from leaching out of the city's aging pipes.",
+          "A pediatrician-led research team later showed that the share of Flint children with elevated blood lead levels roughly doubled after the switch, and in the hardest-hit neighborhoods it more than tripled. Lead exposure in early childhood is linked to lower IQ, developmental delays, and lasting behavioral problems, which is why researchers describe childhood lead exposure as having no safe threshold at all."
+        ],
+        question: "According to the research that documented the Flint water crisis, what happened to the share of Flint children with elevated blood lead levels after the water source switch?",
+        choices: [
+          { text: "It stayed exactly the same", correct: false },
+          { text: "It roughly doubled citywide, and more than tripled in the hardest-hit neighborhoods", correct: true },
+          { text: "It decreased", correct: false },
+          { text: "The study found no children affected", correct: false }
+        ],
+        feedbackCorrect: "Right — citywide the rate roughly doubled, and it climbed even higher in specific neighborhoods, which is part of why the emergency response prioritized the most affected areas first.",
+        feedbackIncorrect: "The actual finding was a sharp increase — the citywide rate roughly doubled, and in the hardest-hit neighborhoods it more than tripled, which is what helped trigger the declared public health emergency.",
+        source: { label: "Hanna-Attisha et al., American Journal of Public Health: \"Elevated Blood Lead Levels in Children Associated With the Flint Drinking Water Crisis\"", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC4985856/" }
+      }
+    ]
+  },
+  {
+    id: "cybersecurity",
+    name: "Cybersecurity",
+    nickname: "DJ Firewall",
+    tracks: [
+      {
+        title: "Dirty Little Secret",
+        artist: "concept: phishing & social engineering",
+        spotifyLink: "",
+        caseStudy: [
+          "A song about hidden deception is a fitting way into phishing — the tactic behind most healthcare cyberattacks isn't a technical break-in, it's a fake message designed to trick a real person into handing over the keys.",
+          "In 2024, the FBI and HHS issued a joint advisory describing an active campaign where attackers used phishing emails to steal employee login credentials, then used that access to redirect insurance payments. Healthcare organizations are especially attractive targets because of the sheer size of their networks, their reliance on technology, and the sensitivity of the data they hold — which is exactly why cybersecurity training treats every employee's inbox as part of the defense, not just the IT department's firewall."
+        ],
+        question: "According to the joint FBI/HHS advisory, what was the attackers' first step in the described campaign?",
+        choices: [
+          { text: "Breaking encryption on a hospital database directly", correct: false },
+          { text: "Using phishing emails to steal employee login credentials", correct: true },
+          { text: "Physically stealing hardware from a data center", correct: false },
+          { text: "Exploiting a software bug with no human involvement", correct: false }
+        ],
+        feedbackCorrect: "Right — the attack started with people, not code: a phishing email tricked someone into giving up their login credentials, which then gave attackers a foothold to go after payment systems.",
+        feedbackIncorrect: "The entry point was human, not technical: phishing emails were used to steal employee credentials first, and that stolen access is what let attackers move further into the network.",
+        source: { label: "FBI & HHS Joint Cybersecurity Advisory: \"Social Engineering Tactics Targeting Healthcare & Public Health Entities and Providers\"", url: "https://www.aha.org/system/files/media/file/2024/06/joint-cybersecurity-advisory-social-engineering-tactics-targeting-healthcare-public-health-entities-and-providers-6-24-2024.pdf" }
+      },
+      {
+        title: "Wall of Shame",
+        artist: "concept: health data breaches & HIPAA",
+        spotifyLink: "",
+        caseStudy: [
+          "This case study borrows its name from the nickname professionals actually use for the federal government's own list of major health data breaches — the HHS Office for Civil Rights Breach Portal.",
+          "Under HIPAA, any breach of protected health information affecting 500 or more people must be reported to HHS, and those reports become permanently searchable by the public. It's a reminder that data security in health research isn't just good practice — it's a legal reporting obligation, and the public record of who's been breached is exactly the kind of institutional accountability tool that shapes how seriously an organization treats participant data."
+        ],
+        question: "Under HIPAA, what triggers a health data breach becoming part of the public HHS breach record?",
+        choices: [
+          { text: "Any breach, no matter how small, is automatically made public", correct: false },
+          { text: "A breach affecting 500 or more individuals must be reported to HHS and is then publicly listed", correct: true },
+          { text: "Only breaches involving financial data are made public", correct: false },
+          { text: "Breaches are never made public under federal law", correct: false }
+        ],
+        feedbackCorrect: "Exactly — the 500-person threshold is what moves a breach from a private report into the public record, which is why researchers and reporters can search it as a public accountability tool.",
+        feedbackIncorrect: "The threshold that matters is 500 affected individuals — breaches at or above that size must be reported to HHS and become part of the public breach portal, while smaller ones are reported differently and not individually public.",
+        source: { label: "U.S. Department of Health and Human Services, Office for Civil Rights: \"Breach Portal\"", url: "https://ocrportal.hhs.gov/ocr/breach/breach_report.jsf" }
+      }
+    ]
+  }
+];
+
+// Flatten for scoring/lookup while keeping section structure for rendering
+let TOTAL_TRACKS = 0;
+SECTIONS.forEach(s => { TOTAL_TRACKS += s.tracks.length; s.tracks.forEach(t => { t.played = false; }); });
+
+// ---- Firebase setup ----
+// Paste your own Firebase config below (see setup instructions).
+// If left blank, the game still works — it just won't save to a shared leaderboard.
+const FIREBASE_CONFIG = {
+  apiKey: "PASTE_YOUR_API_KEY",
+  databaseURL: "https://PASTE-YOUR-PROJECT-default-rtdb.firebaseio.com",
+  projectId: "PASTE_YOUR_PROJECT_ID"
+};
+
+let db = null;
+let firebaseReady = false;
+
+async function initFirebase(){
+  if (!FIREBASE_CONFIG.apiKey || FIREBASE_CONFIG.apiKey === "PASTE_YOUR_API_KEY") return;
+  try {
+    const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+    const { getDatabase, ref, set, onValue } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js");
+    const app = initializeApp(FIREBASE_CONFIG);
+    db = getDatabase(app);
+    window._fb = { ref, set, onValue };
+    firebaseReady = true;
+    listenToLeaderboard();
+  } catch (e) {
+    console.error("Firebase failed to load:", e);
+  }
+}
+
+function listenToLeaderboard(){
+  if (!firebaseReady) return;
+  const { ref, onValue } = window._fb;
+  const scoresRef = ref(db, 'scores');
+  onValue(scoresRef, (snapshot) => {
+    const data = snapshot.val() || {};
+    renderLeaderboard(Object.values(data));
+  });
+}
+
+function saveScoreToFirebase(name, finalPoints){
+  if (!firebaseReady) return;
+  const { ref, set } = window._fb;
+  const safeKey = name.toLowerCase().replace(/[^a-z0-9]/g, '_') || ('player_' + Date.now());
+  set(ref(db, 'scores/' + safeKey), {
+    name: name,
+    points: finalPoints,
+    timestamp: Date.now()
+  });
+}
+
+function submitFeedback(){
+  const nameInput = document.getElementById('feedbackName');
+  const messageInput = document.getElementById('feedbackMessage');
+  const message = messageInput.value.trim();
+  if (!message){ messageInput.focus(); return; }
+  const name = nameInput.value.trim() || 'Anonymous';
+
+  const confirm = document.getElementById('feedbackConfirm');
+
+  if (!firebaseReady){
+    confirm.textContent = "Feedback isn't connected yet — this needs a Firebase config to actually send.";
+    confirm.style.color = '#7A2A2A';
+    confirm.style.display = 'block';
+    setTimeout(() => { confirm.style.display = 'none'; confirm.style.color = ''; }, 5000);
+    return;
+  }
+
+  const { ref, set } = window._fb;
+  const feedbackId = 'fb_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+  set(ref(db, 'feedback/' + feedbackId), {
+    name: name,
+    message: message,
+    timestamp: Date.now()
+  });
+
+  nameInput.value = '';
+  messageInput.value = '';
+  confirm.textContent = "Thanks — that's been sent along.";
+  confirm.style.display = 'block';
+  setTimeout(() => { confirm.style.display = 'none'; }, 4000);
+}
+
+function renderLeaderboard(entries){
+  const board = document.getElementById('leaderboard');
+  const rows = document.getElementById('leaderboardRows');
+  board.style.display = 'block';
+  if (!entries.length){
+    rows.innerHTML = '<p class="leaderboard-empty">No scores yet — be the first to finish.</p>';
+    return;
+  }
+  entries.sort((a, b) => b.points - a.points);
+  rows.innerHTML = entries.slice(0, 15).map((e, i) => `
+    <div class="lb-row">
+      <span class="lb-rank">${i + 1}</span>
+      <span class="lb-name${e.name === playerName ? ' me' : ''}">${escapeHtml(e.name)}</span>
+      <span class="lb-pts">${e.points} pts</span>
+    </div>
+  `).join('');
+}
+
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+// ---- Game state ----
+let points = 0;
+let playerName = '';
+try { playerName = localStorage.getItem('phpl_name') || ''; } catch(e){}
+let openSectionId = null;
+
+function startGame(){
+  const input = document.getElementById('nameInput');
+  const val = input.value.trim();
+  if (!val) { input.focus(); return; }
+  playerName = val;
+  try { localStorage.setItem('phpl_name', playerName); } catch(e){}
+
+  document.getElementById('intro').style.display = 'none';
+  document.getElementById('contribute').style.display = 'none';
+  document.getElementById('gameArea').style.display = 'block';
+  document.getElementById('sectionsList').style.display = 'flex';
+  showPlayingAs();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showPlayingAs(){
+  const el = document.getElementById('playingAs');
+  el.style.display = 'block';
+  el.innerHTML = `Playing as <b>${escapeHtml(playerName)}</b> &middot; <button onclick="changeName()">change</button>`;
+}
+
+function changeName(){
+  playerName = '';
+  try { localStorage.removeItem('phpl_name'); } catch(e){}
+  document.getElementById('gameArea').style.display = 'none';
+  document.getElementById('intro').style.display = 'block';
+  document.getElementById('contribute').style.display = 'block';
+  const input = document.getElementById('nameInput');
+  input.value = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  input.focus();
+}
+
+function renderSections(){
+  const list = document.getElementById('sectionsList');
+  list.innerHTML = '';
+  SECTIONS.forEach((section) => {
+    const playedCount = section.tracks.filter(t => t.played).length;
+    const isComplete = playedCount === section.tracks.length;
+    const isOpen = section.id === openSectionId;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'section' + (isComplete ? ' complete' : '') + (isOpen ? ' open' : '');
+
+    const header = document.createElement('button');
+    header.className = 'section-header';
+    header.onclick = () => toggleSection(section.id);
+    header.innerHTML = `
+      <div class="section-icon">${isComplete ? '✓' : playedCount}</div>
+      <div class="section-titles">
+        <p class="section-name">${section.name}</p>
+        <p class="section-meta">${isComplete ? `<span class="dj-badge">🎧 ${escapeHtml(section.nickname)}</span>` : `${playedCount} of ${section.tracks.length} played`}</p>
+      </div>
+      <svg class="section-chevron" viewBox="0 0 20 20" fill="none"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    `;
+    wrap.appendChild(header);
+
+    const body = document.createElement('div');
+    body.className = 'section-body';
+    const tracksWrap = document.createElement('div');
+    tracksWrap.className = 'section-tracks';
+
+    section.tracks.forEach((t, trackIdx) => {
+      const btn = document.createElement('button');
+      btn.className = 'track' + (t.played ? ' played' : '');
+      btn.onclick = () => playTrack(section.id, trackIdx);
+      btn.innerHTML = `
+        <div class="track-play"></div>
+        <div class="track-info">
+          <p class="track-title">${t.title}</p>
+          <p class="track-artist">${t.artist}</p>
+        </div>
+        <div class="track-status">${t.played ? '✓ played' : '▸ play'}</div>
+      `;
+      tracksWrap.appendChild(btn);
+    });
+
+    body.appendChild(tracksWrap);
+    wrap.appendChild(body);
+    list.appendChild(wrap);
+  });
+}
+
+function toggleSection(sectionId){
+  openSectionId = (openSectionId === sectionId) ? null : sectionId;
+  renderSections();
+  if (openSectionId){
+    setTimeout(() => {
+      const el = document.querySelector('.section.open');
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 50);
+  }
+}
+
+function updateScoreRow(){
+  let playedCount = 0;
+  SECTIONS.forEach(s => { playedCount += s.tracks.filter(t => t.played).length; });
+  document.getElementById('scoreCount').textContent = playedCount;
+  document.getElementById('totalCount').textContent = TOTAL_TRACKS;
+  document.getElementById('scorePoints').textContent = points;
+  document.getElementById('scoreDisc').textContent = playedCount;
+}
+
+function spotifyEmbedHtml(link){
+  if (!link) return '';
+  const match = link.match(/track\/([a-zA-Z0-9]+)/);
+  if (!match) return '';
+  const trackId = match[1];
+  return `<div class="play-cue"><span class="play-cue-dot"></span>Press play to hear it</div>
+  <div class="spotify-embed">
+    <iframe src="https://open.spotify.com/embed/track/${trackId}?utm_source=generator&theme=0"
+      width="100%" height="152" frameBorder="0"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy"></iframe>
+  </div>`;
+}
+
+function sourceLineHtml(source){
+  if (!source) return '';
+  return `<div class="source-line">Source: <a href="${source.url}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.label)}</a></div>`;
+}
+
+function playTrack(sectionId, trackIdx){
+  const section = SECTIONS.find(s => s.id === sectionId);
+  const t = section.tracks[trackIdx];
+  const panel = document.getElementById('panel');
+  panel.className = 'panel active';
+  panel.innerHTML = `
+    <div class="panel-track">
+      <div>
+        <div class="panel-track-title">${t.title}</div>
+        <div class="panel-track-artist">${t.artist}</div>
+      </div>
+      <div class="panel-tag">${section.name}</div>
+    </div>
+    ${spotifyEmbedHtml(t.spotifyLink)}
+    <div class="case-study">${t.caseStudy.map(p => `<p>${p}</p>`).join('')}</div>
+    ${sourceLineHtml(t.source)}
+    <div class="divider"></div>
+    <p class="question">${t.question}</p>
+    <div class="choices" id="choices"></div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn" onclick="closePanel()">Back to the soundtrack</button>
+  `;
+
+  const choicesEl = document.getElementById('choices');
+  t.choices.forEach((c) => {
+    const b = document.createElement('button');
+    b.className = 'choice';
+    b.textContent = c.text;
+    b.onclick = () => answer(sectionId, trackIdx, c, b);
+    choicesEl.appendChild(b);
+  });
+
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function answer(sectionId, trackIdx, choice, btnEl){
+  const section = SECTIONS.find(s => s.id === sectionId);
+  const t = section.tracks[trackIdx];
+
+  const allChoices = document.querySelectorAll('#choices .choice');
+  allChoices.forEach(b => b.disabled = true);
+
+  allChoices.forEach((b, idx) => {
+    const c = t.choices[idx];
+    if (c.correct) b.classList.add('correct');
+    else if (b === btnEl) b.classList.add('incorrect');
+  });
+
+  const fb = document.getElementById('feedback');
+  fb.classList.add('show');
+  if (choice.correct){
+    fb.classList.add('correct');
+    fb.innerHTML = `<b>Correct.</b>${t.feedbackCorrect}`;
+    if (!t.played) points += 10;
+  } else {
+    fb.classList.add('incorrect');
+    fb.innerHTML = `<b>Not quite.</b>${t.feedbackIncorrect}`;
+    if (!t.played) points += 3;
+  }
+
+  t.played = true;
+  document.getElementById('nextBtn').classList.add('show');
+  renderSections();
+  updateScoreRow();
+}
+
+function closePanel(){
+  document.getElementById('panel').className = 'panel';
+  const allPlayed = SECTIONS.every(s => s.tracks.every(t => t.played));
+  if (allPlayed){
+    showFinale();
+  }
+}
+
+function showFinale(){
+  const finale = document.getElementById('finale');
+  finale.className = 'finale active';
+  const max = TOTAL_TRACKS * 10;
+  document.getElementById('finaleText').textContent =
+    `You scored ${points} out of ${max} and made it through every topic. Nice work.`;
+  document.getElementById('finaleDjs').innerHTML = SECTIONS.map(s =>
+    `<span class="finale-dj-chip">🎧 ${escapeHtml(s.nickname)}</span>`
+  ).join('');
+  if (playerName) saveScoreToFirebase(playerName, points);
+  finale.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  launchConfetti();
+}
+
+function launchConfetti(){
+  const canvas = document.getElementById('confettiCanvas');
+  if (!canvas) return;
+  const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+
+  const ctx = canvas.getContext('2d');
+  const parent = canvas.parentElement;
+  const dpr = window.devicePixelRatio || 1;
+  const width = parent.offsetWidth;
+  const height = parent.offsetHeight;
+  canvas.width = width * dpr;
+  canvas.height = height * dpr;
+  ctx.scale(dpr, dpr);
+
+  const colors = ['#7C5CFC', '#FF7A5C', '#2FBF9F', '#FFC940'];
+  const pieces = [];
+  const count = 90;
+  for (let i = 0; i < count; i++){
+    pieces.push({
+      x: Math.random() * width,
+      y: -20 - Math.random() * height * 0.5,
+      size: 5 + Math.random() * 5,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      speedY: 2 + Math.random() * 2.5,
+      speedX: (Math.random() - 0.5) * 2,
+      rotation: Math.random() * 360,
+      rotationSpeed: (Math.random() - 0.5) * 10
+    });
+  }
+
+  let frame = 0;
+  const maxFrames = 130;
+
+  function draw(){
+    frame++;
+    ctx.clearRect(0, 0, width, height);
+    pieces.forEach(p => {
+      p.x += p.speedX;
+      p.y += p.speedY;
+      p.rotation += p.rotationSpeed;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation * Math.PI / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+      ctx.restore();
+    });
+    if (frame < maxFrames){
+      requestAnimationFrame(draw);
+    } else {
+      ctx.clearRect(0, 0, width, height);
+    }
+  }
+  requestAnimationFrame(draw);
+}
+
+function resetGame(){
+  SECTIONS.forEach(s => s.tracks.forEach(t => { t.played = false; }));
+  points = 0;
+  openSectionId = null;
+  document.getElementById('panel').className = 'panel';
+  document.getElementById('finale').className = 'finale';
+  document.getElementById('finaleDjs').innerHTML = '';
+  const canvas = document.getElementById('confettiCanvas');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  renderSections();
+  updateScoreRow();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+renderSections();
+updateScoreRow();
+initFirebase();
+if (playerName) {
+  const input = document.getElementById('nameInput');
+  if (input) input.value = playerName;
+}
+</script>
+</body>
+</html>
